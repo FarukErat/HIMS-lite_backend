@@ -1,21 +1,21 @@
 namespace HL7.Models;
 
-public class Component
+public sealed class Component
 {
     public List<string> Subcomponents { get; set; } = [];
 }
 
-public class Field
+public sealed class Field
 {
     public List<Component> Components { get; set; } = [];
 }
 
-public class Segment
+public sealed class Segment
 {
     public List<Field> Fields { get; set; } = [];
 }
 
-public class Message
+public sealed class Message
 {
     public List<Segment> Segments { get; set; } = [];
 }
