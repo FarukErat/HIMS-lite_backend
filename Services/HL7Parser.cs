@@ -1,4 +1,3 @@
-using System.Text.RegularExpressions;
 using HL7.Models;
 
 namespace HL7.Services;
@@ -10,24 +9,24 @@ public class HL7Parser
     private const char COMPONENT_DELIMITER = '^';
     private const char SUBCOMPONENT_DELIMITER = '&';
     private const char REPETITION_DELIMITER = '~';
-    private const string ESCAPE_REGEX = @"(?<!\\)";
+    private const char ESCAPE_CHARACTER = '\\';
 
     public static Message Parse(string hl7Message)
     {
         Message message = new();
-        string[] segmentStrings = Regex.Split(hl7Message, ESCAPE_REGEX + SEGMENT_DELIMITER);
+        string[] segmentStrings = hl7Message.Split(SEGMENT_DELIMITER);
         foreach (string segmentString in segmentStrings)
         {
             Segment segment = new();
-            string[] fieldStrings = Regex.Split(segmentString, ESCAPE_REGEX + FIELD_DELIMITER);
+            string[] fieldStrings = segmentString.Split(FIELD_DELIMITER);
             foreach (string fieldString in fieldStrings)
             {
                 Field field = new();
-                string[] componentStrings = Regex.Split(fieldString, ESCAPE_REGEX + COMPONENT_DELIMITER);
+                string[] componentStrings = fieldString.Split(COMPONENT_DELIMITER);
                 foreach (string componentString in componentStrings)
                 {
                     Component component = new();
-                    string[] subcomponentStrings = Regex.Split(componentString, ESCAPE_REGEX + SUBCOMPONENT_DELIMITER);
+                    string[] subcomponentStrings = componentString.Split(SUBCOMPONENT_DELIMITER);
                     foreach (string subcomponentString in subcomponentStrings)
                     {
                         component.Subcomponents.Add(subcomponentString);
