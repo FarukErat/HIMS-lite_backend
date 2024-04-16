@@ -26,7 +26,7 @@ public class HL7Controller : ControllerBase
     }
 
     [HttpPost("upload-hl7-file")]
-    public IActionResult UploadHL7File([FromBody] IFormFile file)
+    public async Task<IActionResult> UploadHL7File(IFormFile file)
     {
         if (file == null || file.Length == 0)
         {
@@ -36,14 +36,14 @@ public class HL7Controller : ControllerBase
         string filePath = Path.GetTempFileName();
         using (FileStream stream = System.IO.File.Create(filePath))
         {
-            file.CopyTo(stream);
+            await file.CopyToAsync(stream);
         }
 
         return Ok(new { filePath });
     }
 
     [HttpGet("download-hl7-file")]
-    public IActionResult DownloadHL7File([FromQuery] string filePath)
+    public async Task<IActionResult> DownloadHL7File([FromQuery] string filePath)
     {
         if (string.IsNullOrEmpty(filePath))
         {
@@ -55,12 +55,12 @@ public class HL7Controller : ControllerBase
             return NotFound("File not found");
         }
 
-        byte[] fileBytes = System.IO.File.ReadAllBytes(filePath);
+        byte[] fileBytes = await System.IO.File.ReadAllBytesAsync(filePath);
         return File(fileBytes, "application/octet-stream", Path.GetFileName(filePath));
     }
 
     [HttpPost("parse-hl7-message")]
-    public IActionResult ParseHL7Message([FromBody] string hl7Message)
+    public IActionResult ParseHL7Message(string hl7Message)
     {
         if (string.IsNullOrEmpty(hl7Message))
         {
@@ -72,7 +72,7 @@ public class HL7Controller : ControllerBase
     }
 
     [HttpPost("parse-hl7-file")]
-    public IActionResult ParseHL7File([FromBody] IFormFile file)
+    public IActionResult ParseHL7File(IFormFile file)
     {
         if (file == null || file.Length == 0)
         {
