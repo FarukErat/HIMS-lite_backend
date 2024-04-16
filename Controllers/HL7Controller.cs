@@ -6,7 +6,7 @@ namespace HL7.Controllers;
 
 [ApiController]
 [Route("[controller]")]
-public class HL7Controller : ControllerBase
+public sealed class HL7Controller : ControllerBase
 {
     [HttpGet("parse-sample-hl7-message")]
     public IActionResult ParseSampleHL7Message()

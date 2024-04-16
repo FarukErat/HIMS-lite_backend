@@ -2,7 +2,7 @@ using HL7.Models;
 
 namespace HL7.Services;
 
-public class HL7Parser
+public static class HL7Parser
 {
     private const char SEGMENT_DELIMITER = '\r';
     private const char FIELD_DELIMITER = '|';
