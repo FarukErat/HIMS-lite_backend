@@ -1,6 +1,6 @@
-using HL7.Models;
+using Models;
 
-namespace HL7.Services;
+namespace Services;
 
 public static class HL7Parser
 {

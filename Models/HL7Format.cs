@@ -1,4 +1,4 @@
-namespace HL7.Models;
+namespace Models;
 
 public sealed class Component
 {

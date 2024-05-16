@@ -1,8 +1,8 @@
-using HL7.Models;
-using HL7.Services;
+using Models;
+using Services;
 using Microsoft.AspNetCore.Mvc;
 
-namespace HL7.Controllers;
+namespace Controllers;
 
 [ApiController]
 [Route("[controller]")]
