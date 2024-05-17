@@ -1,7 +1,8 @@
 namespace Enums;
 
-public enum Roles
+public enum Role
 {
     Admin,
-    User
+    User,
+    Unverified
 }
