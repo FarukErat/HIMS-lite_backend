@@ -10,21 +10,31 @@ namespace Security;
 [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method, AllowMultiple = true)]
 public class SessionAuthAttribute : TypeFilterAttribute
 {
-    public Role[]? Roles;
-    public SessionAuthAttribute() : base(typeof(SessionAuthFilter))
+    public SessionAuthAttribute(params Role[] roles) : base(typeof(SessionAuthFilter))
     {
+        Arguments = [roles];
     }
 }
 
-public class SessionAuthFilter(
-    SessionRepository sessionRepository
-) : IAsyncAuthorizationFilter
+public class SessionAuthFilter : IAsyncAuthorizationFilter
 {
-    private readonly SessionRepository _sessionRepository = sessionRepository;
+    private readonly SessionRepository _sessionRepository;
+    private readonly Role[] _roles;
+
+    public SessionAuthFilter(SessionRepository sessionRepository, Role[] roles)
+    {
+        _sessionRepository = sessionRepository;
+        _roles = roles;
+    }
 
     public async Task OnAuthorizationAsync(AuthorizationFilterContext context)
     {
-        string? sessionIdStr = context.HttpContext.Request.Cookies[Configurations.SessionIdCookieKey];
+        if (!context.HttpContext.Request.Cookies.TryGetValue(Configurations.SessionIdCookieKey, out string? sessionIdStr))
+        {
+            context.Result = new UnauthorizedResult();
+            return;
+        }
+
         if (!Guid.TryParse(sessionIdStr, out Guid sessionIdGuid))
         {
             context.Result = new UnauthorizedResult();
@@ -45,9 +55,7 @@ public class SessionAuthFilter(
             return;
         }
 
-        Role[]? roles = context.Filters.OfType<SessionAuthAttribute>().FirstOrDefault()?.Roles;
-        if (roles is not null && roles.Length > 0
-            && !roles.Any(session.Roles.Contains))
+        if (_roles.Length > 0 && !_roles.Any(role => session.Roles.Contains(role)))
         {
             context.Result = new UnauthorizedResult();
             return;

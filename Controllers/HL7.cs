@@ -8,10 +8,35 @@ namespace Controllers;
 
 [ApiController]
 [Route("[controller]")]
-[SessionAuth]
 public sealed class HL7Controller : ControllerBase
 {
-    [SessionAuth(Roles = [Role.Admin, Role.User])]
+    [SessionAuth(Role.Admin)]
+    [HttpGet("only-admin-can-access")]
+    public IActionResult OnlyAdminCanAccess()
+    {
+        return Ok("user is admin");
+    }
+
+    [SessionAuth(Role.Admin, Role.User)]
+    [HttpGet("admin-and-user-can-access")]
+    public IActionResult AdminAndUserCanAccess()
+    {
+        return Ok("user is admin or user");
+    }
+
+    [SessionAuth]
+    [HttpGet("any-user-can-access")]
+    public IActionResult AnyoneCanAccess()
+    {
+        return Ok("anyone can access");
+    }
+
+    [HttpGet("anyone-can-access")]
+    public IActionResult AnyoneCanAccessWithoutAttribute()
+    {
+        return Ok("anyone can access without attribute");
+    }
+
     [HttpGet("parse-sample-hl7-message")]
     public IActionResult ParseSampleHL7Message()
     {

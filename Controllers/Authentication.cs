@@ -97,4 +97,24 @@ public sealed class AuthenticationController(
 
         return Ok(new { message = "User logged in" });
     }
+
+    [HttpGet("logout")]
+    public async Task<IActionResult> Logout()
+    {
+        if (!Request.Cookies.TryGetValue(Configurations.SessionIdCookieKey, out string? sessionId))
+        {
+            return BadRequest(new { message = "Session not found" });
+        }
+
+        if (!Guid.TryParse(sessionId, out Guid sessionGuid))
+        {
+            return BadRequest(new { message = "Invalid session" });
+        }
+
+        await _sessionRepository.DeleteSessionByIdAsync(sessionGuid);
+
+        Response.Cookies.Delete(Configurations.SessionIdCookieKey);
+
+        return Ok(new { message = "User logged out" });
+    }
 }
