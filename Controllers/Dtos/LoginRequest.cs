@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 namespace Controllers.Dtos;
 
 public sealed record LoginRequest(
-    [EmailAddress, Required]
+    [Required, EmailAddress]
     string Email,
 
     [Required, MinLength(6), MaxLength(32)]

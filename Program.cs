@@ -11,6 +11,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddScoped<UserRepository>();
+builder.Services.AddScoped<SessionRepository>();
 builder.Services.AddSingleton<PasswordHasher>();
 
 builder.Services.AddDbContextPool<AppDbContext>(options =>

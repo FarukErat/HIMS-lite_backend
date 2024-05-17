@@ -1,4 +1,3 @@
-using System.Text.Json;
 using Enums;
 
 namespace Entities;
@@ -20,18 +19,18 @@ public sealed class User
 
 public static class UIntExtensions
 {
-    public static string ToRolesJson(this uint number)
+    public static List<Role> ToRoleList(this uint number)
     {
-        List<string> roles = [];
+        List<Role> roles = [];
 
-        for (int i = 0; i < 32; i++)
+        for (int i = 0; i < sizeof(uint) * 8; i++)
         {
             if ((number & (1 << i)) != 0)
             {
-                roles.Add(((Role)i).ToString());
+                roles.Add((Role)i);
             }
         }
 
-        return JsonSerializer.Serialize(roles);
+        return roles;
     }
 }

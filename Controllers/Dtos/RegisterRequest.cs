@@ -9,7 +9,7 @@ public sealed record RegisterRequest(
     [Required]
     string LastName,
 
-    [EmailAddress, Required]
+    [Required, EmailAddress]
     string Email,
 
     [Required, MinLength(6), MaxLength(32)]

@@ -1,13 +1,17 @@
 using Models;
 using Services;
 using Microsoft.AspNetCore.Mvc;
+using Security;
+using Enums;
 
 namespace Controllers;
 
 [ApiController]
 [Route("[controller]")]
+[SessionAuth]
 public sealed class HL7Controller : ControllerBase
 {
+    [SessionAuth(Roles = [Role.Admin, Role.User])]
     [HttpGet("parse-sample-hl7-message")]
     public IActionResult ParseSampleHL7Message()
     {
