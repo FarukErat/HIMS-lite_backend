@@ -26,15 +26,15 @@ public sealed class HL7Controller : ControllerBase
 
     [SessionAuth]
     [HttpGet("any-user-can-access")]
-    public IActionResult AnyoneCanAccess()
+    public IActionResult AnyUserCanAccess()
     {
-        return Ok("anyone can access");
+        return Ok("user is anyone registered");
     }
 
     [HttpGet("anyone-can-access")]
-    public IActionResult AnyoneCanAccessWithoutAttribute()
+    public IActionResult AnyoneCanAccess()
     {
-        return Ok("anyone can access without attribute");
+        return Ok("user is anyone");
     }
 
     [HttpGet("parse-sample-hl7-message")]
