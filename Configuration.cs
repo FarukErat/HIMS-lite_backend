@@ -10,6 +10,6 @@ public static class Configurations
 
 public sealed class ConnectionStrings
 {
-    public readonly string Postgres = "Host=localhost;Port=5432;Database=HimsLite;Username=postgres;Password=root;Pooling=true;";
+    public readonly string Postgres = "Host=localhost;Port=5432;Database=HimsLite;Username=postgres;Password=postgres;Pooling=true;";
     public readonly string Redis = "redis://localhost:6379";
 }
