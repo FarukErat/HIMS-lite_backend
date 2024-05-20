@@ -20,7 +20,9 @@ public sealed class SessionRepository
     {
         Guid id = Guid.NewGuid();
         session.Id = id;
-        await _sessions.InsertAsync(session, session.ExpireAt - DateTime.UtcNow);
+        session.CreatedAt = DateTime.UtcNow;
+        session.ExpireAt = DateTime.UtcNow + Configurations.SessionExpiry;
+        await _sessions.InsertAsync(session, Configurations.SessionExpiry);
         return id;
     }
 

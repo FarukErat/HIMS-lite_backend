@@ -28,7 +28,7 @@ public sealed class AuthenticationController(
         User? existingUser = await _userRepository.FindByEmailAsync(registerRequest.Email);
         if (existingUser is not null)
         {
-            return BadRequest(new { message = "User already exists" });
+            return Conflict(new { message = "User already exists" });
         }
 
         User user = new()
@@ -63,16 +63,12 @@ public sealed class AuthenticationController(
 
         // ---- user is authenticated ----
 
-        DateTime sessionExpireAt = DateTime.UtcNow.Add(Configurations.SessionExpiry);
-
         Session newSession = new()
         {
             UserId = user.Id,
             Roles = user.Roles.ToRoleList(),
             IpAddress = Request.HttpContext.Connection.RemoteIpAddress?.ToString() ?? string.Empty,
             UserAgent = Request.Headers.UserAgent.ToString(),
-            CreatedAt = DateTime.UtcNow,
-            ExpireAt = sessionExpireAt,
         };
 
         Guid sessionId;
@@ -92,10 +88,15 @@ public sealed class AuthenticationController(
             HttpOnly = true,
             SameSite = SameSiteMode.Strict,
             Secure = true,
-            Expires = sessionExpireAt
+            Expires = DateTime.UtcNow + Configurations.SessionExpiry
         });
 
-        return Ok(new { message = "User logged in" });
+        return Ok(new
+        {
+            firstName = user.FirstName,
+            lastName = user.LastName,
+            role = user.Roles.ToRoleList().First().ToString()
+        });
     }
 
     [HttpGet("logout")]

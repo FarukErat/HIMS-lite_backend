@@ -10,31 +10,31 @@ namespace Controllers;
 [Route("[controller]")]
 public sealed class HL7Controller : ControllerBase
 {
+    [HttpGet("anyone-can-access")]
+    public IActionResult AnyoneCanAccess()
+    {
+        return Ok("Anyone can access this");
+    }
+
+    [SessionAuth]
+    [HttpGet("only-authenticated-can-access")]
+    public IActionResult OnlyAuthenticatedCanAccess()
+    {
+        return Ok("Only authenticated users can access this");
+    }
+
     [SessionAuth(Role.Admin)]
     [HttpGet("only-admin-can-access")]
     public IActionResult OnlyAdminCanAccess()
     {
-        return Ok("user is admin");
+        return Ok("Only admin users can access this");
     }
 
-    [SessionAuth(Role.Admin, Role.User)]
-    [HttpGet("admin-and-user-can-access")]
-    public IActionResult AdminAndUserCanAccess()
+    [SessionAuth(Role.Admin, Role.Unverified)]
+    [HttpGet("only-admin-or-unverified-can-access")]
+    public IActionResult OnlyAdminOrUnverifiedCanAccess()
     {
-        return Ok("user is admin or user");
-    }
-
-    [SessionAuth]
-    [HttpGet("any-user-can-access")]
-    public IActionResult AnyUserCanAccess()
-    {
-        return Ok("user is anyone registered");
-    }
-
-    [HttpGet("anyone-can-access")]
-    public IActionResult AnyoneCanAccess()
-    {
-        return Ok("user is anyone");
+        return Ok("Only admin or unverified users can access this");
     }
 
     [HttpGet("parse-sample-hl7-message")]
