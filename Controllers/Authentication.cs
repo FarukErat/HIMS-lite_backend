@@ -31,13 +31,23 @@ public sealed class AuthenticationController(
             return Conflict(new { message = "User already exists" });
         }
 
+        uint role = 1 << (int)Role.Unverified;
+        #region REMOVE THIS REGION BEFORE PRODUCTION
+        // consider checking whether environment is development and can work fine in docker
+        if (registerRequest.Email.EndsWith("admin@admin.com")
+            && registerRequest.Password == "adminadmin")
+        {
+            role = 1 << (int)Role.Admin;
+        }
+        #endregion
+
         User user = new()
         {
             FirstName = registerRequest.FirstName,
             LastName = registerRequest.LastName,
             Email = registerRequest.Email,
             PasswordHash = _passwordHasher.HashPassword(registerRequest.Password),
-            Roles = 1 << (int)Role.Unverified,
+            Roles = role,
             CreatedAt = DateTime.UtcNow,
             UpdatedAt = DateTime.UtcNow
         };
