@@ -34,7 +34,7 @@ public sealed class AuthenticationController(
         uint role = 1 << (int)Role.Unverified;
         #region REMOVE THIS REGION BEFORE PRODUCTION
         // consider checking whether environment is development and can work fine in docker
-        if (registerRequest.Email.EndsWith("admin@admin.com")
+        if (registerRequest.Email == "admin@admin.com"
             && registerRequest.Password == "adminadmin")
         {
             role = 1 << (int)Role.Admin;
