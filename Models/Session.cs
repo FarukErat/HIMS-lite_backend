@@ -13,6 +13,9 @@ public sealed record class Session
     public Guid UserId { get; set; }
 
     [Indexed]
+    public string? Email { get; set; }
+
+    [Indexed]
     public List<Role> Roles { get; set; } = [];
 
     [Indexed]

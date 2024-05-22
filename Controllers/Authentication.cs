@@ -1,3 +1,4 @@
+using System.Web.Http.Cors;
 using Configuration;
 using Controllers.Dtos.Login;
 using Controllers.Dtos.Register;
@@ -12,6 +13,7 @@ namespace Controllers;
 
 [ApiController]
 [Route("[controller]")]
+[EnableCors(origins: "*", headers: "*", methods: "*")]
 public sealed class AuthenticationController(
     UserRepository userRepository,
     PasswordHasher passwordHasher,
@@ -77,6 +79,7 @@ public sealed class AuthenticationController(
         Session newSession = new()
         {
             UserId = user.Id,
+            Email = user.Email,
             Roles = user.Roles.ToRoleList(),
             IpAddress = Request.HttpContext.Connection.RemoteIpAddress?.ToString() ?? string.Empty,
             UserAgent = Request.Headers.UserAgent.ToString(),
@@ -105,6 +108,7 @@ public sealed class AuthenticationController(
         });
 
         return Ok(new LoginResponse(
+            Email: user.Email,
             FirstName: user.FirstName,
             LastName: user.LastName,
             Role: user.Roles.ToRoleList().First().ToString()

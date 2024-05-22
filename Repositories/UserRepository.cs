@@ -27,6 +27,11 @@ public sealed class UserRepository(
         return await _appDbContext.Users.FirstOrDefaultAsync(user => user.Email == email);
     }
 
+    public async Task<List<User>> GetAllAsync()
+    {
+        return await _appDbContext.Users.ToListAsync();
+    }
+
     public async Task UpdateAsync(User user)
     {
         _appDbContext.Users.Update(user);

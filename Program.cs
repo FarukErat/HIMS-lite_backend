@@ -21,11 +21,9 @@ builder.Services.AddDbContextPool<AppDbContext>(options =>
 #region Middleware
 WebApplication app = builder.Build();
 
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+app.UseSwagger();
+app.UseSwaggerUI();
+
 app.UseHttpsRedirection();
 app.UseAuthorization();
 

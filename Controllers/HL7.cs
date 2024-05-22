@@ -3,11 +3,13 @@ using Services;
 using Microsoft.AspNetCore.Mvc;
 using Security;
 using Enums;
+using System.Web.Http.Cors;
 
 namespace Controllers;
 
 [ApiController]
 [Route("[controller]")]
+[EnableCors(origins: "*", headers: "*", methods: "*")]
 public sealed class HL7Controller : ControllerBase
 {
     [HttpGet("anyone-can-access")]
