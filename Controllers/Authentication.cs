@@ -80,6 +80,8 @@ public sealed class AuthenticationController(
         else
         {
             sessionId = existingSession.Id;
+            newSession.CreatedAt = existingSession.CreatedAt;
+            newSession.ExpireAt = existingSession.ExpireAt;
             await _sessionRepository.UpdateSessionByIdAsync(existingSession.Id, newSession);
         }
 
