@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace Controllers.Dtos;
+namespace Controllers.Dtos.Register;
 
 public sealed record RegisterRequest(
     [Required]

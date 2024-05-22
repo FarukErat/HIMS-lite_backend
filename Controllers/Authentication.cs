@@ -1,8 +1,8 @@
 using Configuration;
-using Controllers.Dtos;
+using Controllers.Dtos.Login;
+using Controllers.Dtos.Register;
 using Entities;
 using Enums;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Models;
 using Repositories;
@@ -48,6 +48,7 @@ public sealed class AuthenticationController(
     }
 
     [HttpPost("login")]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(LoginResponse))]
     public async Task<IActionResult> Login(LoginRequest loginRequest)
     {
         User? user = await _userRepository.FindByEmailAsync(loginRequest.Email);
@@ -93,12 +94,11 @@ public sealed class AuthenticationController(
             Expires = DateTime.UtcNow + Configurations.SessionExpiry
         });
 
-        return Ok(new
-        {
-            firstName = user.FirstName,
-            lastName = user.LastName,
-            role = user.Roles.ToRoleList().First().ToString()
-        });
+        return Ok(new LoginResponse(
+            FirstName: user.FirstName,
+            LastName: user.LastName,
+            Role: user.Roles.ToRoleList().First().ToString()
+        ));
     }
 
     [HttpGet("logout")]
