@@ -7,10 +7,7 @@ using System.Web.Http.Cors;
 
 namespace Controllers;
 
-[ApiController]
-[Route("[controller]")]
-[EnableCors(origins: "*", headers: "*", methods: "*")]
-public sealed class HL7Controller : ControllerBase
+public sealed class HL7Controller : BaseController
 {
     [HttpGet("anyone-can-access")]
     public IActionResult AnyoneCanAccess()

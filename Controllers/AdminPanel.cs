@@ -10,12 +10,9 @@ using Security;
 
 namespace Controllers;
 
-[ApiController]
-[Route("[controller]")]
-[EnableCors(origins: "*", headers: "*", methods: "*")]
 public sealed class AdminPanelController(
     UserRepository userRepository
-) : ControllerBase
+) : BaseController
 {
     private readonly UserRepository _userRepository = userRepository;
 

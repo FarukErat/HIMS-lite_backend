@@ -11,14 +11,11 @@ using Services;
 
 namespace Controllers;
 
-[ApiController]
-[Route("[controller]")]
-[EnableCors(origins: "*", headers: "*", methods: "*")]
 public sealed class AuthenticationController(
     UserRepository userRepository,
     PasswordHasher passwordHasher,
     SessionRepository sessionRepository
-) : ControllerBase
+) : BaseController
 {
     private readonly UserRepository _userRepository = userRepository;
     private readonly PasswordHasher _passwordHasher = passwordHasher;
