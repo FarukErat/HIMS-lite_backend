@@ -10,6 +10,14 @@ public static class Configurations
 
 public sealed class ConnectionStrings
 {
-    public readonly string Postgres = "Host=localhost;Port=5432;Database=HimsLite;Username=postgres;Password=postgres;Pooling=true;";
-    public readonly string Redis = "redis://localhost:6379";
+    public readonly string Postgres;
+    public readonly string Redis;
+
+    public ConnectionStrings()
+    {
+        Postgres = Environment.GetEnvironmentVariable("POSTGRES_CONNECTION_STRING")
+            ?? throw new ArgumentNullException("POSTGRES_CONNECTION_STRING");
+        Redis = Environment.GetEnvironmentVariable("REDIS_CONNECTION_STRING")
+            ?? throw new ArgumentNullException("REDIS_CONNECTION_STRING");
+    }
 }

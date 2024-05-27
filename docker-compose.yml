@@ -1,0 +1,38 @@
+# docker-compose up -d --build
+
+services:
+  hims_app:
+    container_name: hims_app
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "5193:5193"
+    depends_on:
+      - "hims_user_db"
+    restart: always
+    environment:
+      - POSTGRES_CONNECTION_STRING=Host=hims_user_db;Port=5432;Database=HimsLite;Username=postgres;Password=postgres;Pooling=true;
+      - REDIS_CONNECTION_STRING=redis://hims_session_cache:6379
+
+  hims_session_cache:
+    image: redis/redis-stack-server:latest
+    container_name: hims_session_cache
+    restart: always
+    volumes:
+      - hims_session_cache_volume:/var/lib/redis
+
+  hims_user_db:
+    image: postgres:latest
+    container_name: hims_user_db
+    restart: always
+    volumes:
+      - hims_user_db_volume:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=root
+      - POSTGRES_DB=users
+
+volumes:
+  hims_user_db_volume:
+  hims_session_cache_volume:
